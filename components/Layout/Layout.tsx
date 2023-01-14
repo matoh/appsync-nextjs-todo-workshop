@@ -19,9 +19,9 @@ export default function Layout({ children }: { children: ReactElement }) {
         <link rel='icon' href='/favicon.ico' />
       </Head>
       <main className={inter.className}>
-        <Box maxWidth='68rem' margin='auto' height='100vh'>
+        <Box maxWidth='68rem' margin='auto' height='100vh' backgroundColor={color('gray.50', 'gray.600')}>
           <HeaderBar />
-          <Box p='4' backgroundColor={color('gray.50', 'gray.600')}>
+          <Box p='4' >
             {children}
           </Box>
         </Box>
