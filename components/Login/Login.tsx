@@ -12,7 +12,7 @@ export default function Login() {
       alignItems='center'
       justifyContent='center'
     >
-      <Flex minW={{ base: 'auto', lg: 'xl' }} direction='column'>
+      <Flex minW={{ base: 'auto', lg: 'xl' }} direction='column' backgroundColor='aliceblue' padding='10'>
         <Heading size='4xl' textAlign='center' mb={{ base: '8', lg: '16' }}>
           Todo App
         </Heading>
