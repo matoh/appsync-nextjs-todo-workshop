@@ -1,10 +1,15 @@
 import { ReactElement } from 'react';
-import Head from 'next/head';
+import { Box } from '@chakra-ui/react';
 import { Inter } from '@next/font/google';
+import Head from 'next/head';
+import useColorModeValue from '../../hooks/useColorModeValue';
+import HeaderBar from './HeaderBar';
 
 const inter = Inter({ subsets: ['latin'] });
 
 export default function Layout({ children }: { children: ReactElement }) {
+  const { color } = useColorModeValue();
+
   return (
     <>
       <Head>
@@ -13,7 +18,14 @@ export default function Layout({ children }: { children: ReactElement }) {
         <meta name='viewport' content='width=device-width, initial-scale=1' />
         <link rel='icon' href='/favicon.ico' />
       </Head>
-      <main className={inter.className}>{children}</main>
+      <main className={inter.className}>
+        <Box maxWidth='68rem' margin='auto' height='100vh'>
+          <HeaderBar />
+          <Box p='4' backgroundColor={color('gray.50', 'gray.600')}>
+            {children}
+          </Box>
+        </Box>
+      </main>
     </>
   );
 }
