@@ -2,15 +2,24 @@ import { Text, Card, CardBody, HStack, Stack, Heading, Button, Input, FormContro
 import React, { useState } from 'react';
 import { FaTrash } from 'react-icons/fa';
 import useColorModeValue from '../hooks/useColorModeValue';
+import { v4 as uuid } from 'uuid';
+
+export interface TodoItem {
+  id: string;
+  text: string;
+}
 
 export default function Home() {
-  const [todoItems, setTodoItems] = useState<string[]>(['task 1', 'task2', 'task3']);
+  const [todoItems, setTodoItems] = useState<TodoItem[]>([
+    { id: uuid(), text: 'Task 1' },
+    { id: uuid(), text: 'Task 2' }
+  ]);
   const [newItem, setNewItem] = useState('');
   const { color } = useColorModeValue();
 
   const addNewItem = () => {
     if (newItem) {
-      setTodoItems([...todoItems, newItem]);
+      setTodoItems([...todoItems, { id: uuid(), text: newItem }]);
       setNewItem('');
     }
   };
@@ -20,18 +29,18 @@ export default function Home() {
       <Heading my='4' size='lg' textAlign='center'>
         Task List
       </Heading>
-      {todoItems.map((item, index) => (
+      {todoItems.map((item) => (
         <Card
-          key={index}
+          key={item.id}
           boxShadow='md'
           border='2px'
           borderColor={color('gray.200', 'gray.800')}
           backgroundColor={color('white', 'gray.700')}
         >
-          <CardBody>
+          <CardBody p='3'>
             <Flex alignItems='center' justifyContent='space-between'>
-              <Text color={color('black', 'white')}>{item}</Text>
-              <Button>
+              <Text color={color('black', 'white')}>{item.text}</Text>
+              <Button onClick={() => setTodoItems(todoItems.filter((todoItem) => todoItem.id !== item.id))}>
                 <FaTrash />
               </Button>
             </Flex>
