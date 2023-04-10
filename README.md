@@ -1,36 +1,28 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+This is Next.js workshop, used for learning purposes of GraphQL by using AWS AppSync and Apollo client.
 
 ## Getting Started
 
-First, run the development server:
+Prerequisites:
+1) Configured services according to the: https://github.com/matoh/appsync-backend-todo-workshop
+2) Services are configured and deployed: AWS CDK, AWS AppSync, AWS DynamoDB, AWS Cognito etc..
+
+Run the development server:
 
 ```bash
 npm run dev
-# or
-yarn dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Outcomes and learnings from the workshop
+Workshop demonstrating querying and mutating data from Dynamo DB data source by using GraphQL (Apollo client) and AWS AppSync, which was configured by AWS CDK. Authentication process is handled by Next.js Auth library.
 
-You can start editing the page by modifying `pages/index.tsx`. The page auto-updates as you edit the file.
+Experience with AppSync is mixed, as there are not enough of practical examples and there are several AWS libraries for client part, which are lacking documentation.
 
-[API routes](https://nextjs.org/docs/api-routes/introduction) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.ts`.
+Also in my [CDK configuration](https://github.com/matoh/appsync-backend-todo-workshop) I am using `@aws-cdk/aws-appsync-alpha`, which is not stable to simplify configuration of VTL (Apache Velocity Template Language) resolvers. This CDK construct simplifying configurations but cannot be used for production environment yet.
 
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
+AppSync also supporting JavaScript resolvers and Lambda resolvers, which are commonly used, but they are adding complexity to the setup.
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+Another downside of AppSync is lack of possibilities to run it locally (at least haven't found a convenient way). 
 
-## Learn More
+In general AppSync together with AWS Amplify have a steep learning curve mainly due to lack documentation, not clear instruction regarding SDK packages and missing practical examples.
 
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+Depends on the use case (if GraphQL subscriptions are requirements or not) but in general I would recommend to use Apollo Server served on AWS Lambda instead of AWS AppSync.

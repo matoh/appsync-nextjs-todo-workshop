@@ -1,8 +1,34 @@
 import { Text, Card, CardBody, HStack, Stack, Heading, Button, Input, FormControl, Flex } from '@chakra-ui/react';
 import React, { useReducer, useState } from 'react';
 import { FaTrash } from 'react-icons/fa';
-import useColorModeValue from '../hooks/useColorModeValue';
 import { v4 as uuid } from 'uuid';
+import { gql, useMutation } from '@apollo/client';
+import { listTodos } from '../graphql/queries';
+import { addTodo } from '../graphql/mutations';
+import { ApolloGraphQLClient } from '../services/ApolloGraphQLClient';
+import { getToken } from 'next-auth/jwt';
+import useColorModeValue from '../hooks/useColorModeValue';
+
+/**
+ * Fetch todo list on server side by using Apollo GraphQL client
+ * @param context
+ */
+export async function getServerSideProps(context: any) {
+  let todoItems = [];
+  const jwtToken = await getToken(context);
+
+  if (jwtToken) {
+    const graphQLClient = ApolloGraphQLClient(jwtToken.access_token);
+    const { data } = await graphQLClient.query({ query: gql(listTodos) });
+    todoItems = data.listTodos;
+  }
+
+  return {
+    props: {
+      storedTodoItems: todoItems
+    }
+  };
+}
 
 enum ActionType {
   ADD_ITEM = 'addItem',
@@ -32,17 +58,36 @@ function reducer(todoItems: TodoItem[], action: ActionTypes): TodoItem[] {
 
 export interface TodoItem {
   id: string;
-  text: string;
+  name: string;
+  description?: string;
 }
 
-export default function Home() {
-  const [todoItems, dispatch] = useReducer(reducer, []);
+/**
+ * Todo APP, fetching items from Dynamo DB by using GraphQL and AppSync. Todo App is workshop
+ * and it not finished as not all operation are implemented by using GraphQL
+ * @param storedTodoItems
+ */
+export default function Home({ storedTodoItems }: { storedTodoItems: [] }) {
+  const [todoItems, dispatch] = useReducer(reducer, storedTodoItems);
   const [newItem, setNewItem] = useState('');
   const { color } = useColorModeValue();
+  const [addTodoIntoList] = useMutation(gql(addTodo));
 
   const addNewItem = () => {
     if (newItem) {
-      dispatch({ type: ActionType.ADD_ITEM, todo: { id: uuid(), text: newItem } });
+      // Example implementation of creating TODO item and storing it into DynamoDB
+      addTodoIntoList({
+        variables: {
+          input: {
+            name: newItem,
+            description: '-',
+            owner: 'example',
+            createdAt: '2023-07-24',
+            updatedAt: '2023-07-24'
+          }
+        }
+      });
+      dispatch({ type: ActionType.ADD_ITEM, todo: { id: uuid(), name: newItem } });
       setNewItem('');
     }
   };
@@ -62,7 +107,9 @@ export default function Home() {
         >
           <CardBody p='3'>
             <Flex alignItems='center' justifyContent='space-between'>
-              <Text color={color('black', 'white')}>{item.text}</Text>
+              <Text color={color('black', 'white')}>
+                {item.name} - {item.description}
+              </Text>
               <Button onClick={() => dispatch({ type: ActionType.DELETE_ITEM, id: item.id })}>
                 <FaTrash />
               </Button>
