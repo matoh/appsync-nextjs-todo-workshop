@@ -5,6 +5,7 @@ This is Next.js workshop, used for learning purposes of GraphQL by using AWS App
 Prerequisites:
 1) Configured services according to the: https://github.com/matoh/appsync-backend-todo-workshop
 2) Services are configured and deployed: AWS CDK, AWS AppSync, AWS DynamoDB, AWS Cognito etc..
+3) Duplicate file `.env.example` and name it `.env.local` and `.env.production` and replace example values of env variables
 
 Run the development server:
 
