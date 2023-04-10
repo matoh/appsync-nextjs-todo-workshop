@@ -6,12 +6,12 @@ export function ApolloGraphQLClient(jwtToken: string) {
   let apolloLink = undefined;
 
   if (jwtToken) {
-    const url = process.env.APPSYNC_GRAPHQL_ENDPOINT;
-    const region = process.env.APPSYNC_REGION;
+    const url = process.env.NEXT_PUBLIC_APPSYNC_GRAPHQL_ENDPOINT;
+    const region = process.env.NEXT_PUBLIC_APPSYNC_REGION;
 
     const auth = {
-      type: process.env.APPSYNC_AUTHENTIFICATION_TYPE,
-      apiKey: process.env.APPSYNC_API_KEY,
+      type: process.env.NEXT_PUBLIC_APPSYNC_AUTHENTIFICATION_TYPE,
+      apiKey: process.env.NEXT_PUBLIC_APPSYNC_API_KEY,
       jwtToken: jwtToken
     };
 
