@@ -1,0 +1,15 @@
+projects:
+  TodoAppSyncApi:
+    schemaPath: src/graphql/schema.json
+    includes:
+      - src/graphql/**/*.ts
+    excludes:
+      - ./amplify/**
+    extensions:
+      amplify:
+        codeGenTarget: typescript
+        generatedFileName: src/Api.ts
+        docsFilePath: src/graphql
+        region: eu-central-1
+        apiId: sqdrxvhynvf7fkbaajg4opmrfi
+        maxDepth: 2
