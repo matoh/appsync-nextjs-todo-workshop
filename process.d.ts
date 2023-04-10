@@ -7,5 +7,9 @@ declare namespace NodeJS {
     NEXTAUTH_URL: string;
     NEXTAUTH_SECRET: string;
     NEXTAUTH_DEBUG: string;
+    APPSYNC_REGION: string;
+    APPSYNC_GRAPHQL_ENDPOINT: string;
+    APPSYNC_AUTHENTIFICATION_TYPE: string;
+    APPSYNC_API_KEY: string;
   }
 }
